@@ -35,6 +35,9 @@ public class Main {
                 printTab(tasks);
                 break;
             case "exit":
+                saveToFile(file,tasks);
+                System.out.println(ConsoleColors.RED + "Bye Bye");
+                System.exit(0);
                 break;
             default:
                 System.out.println("Please select a correct option");
@@ -70,11 +73,11 @@ public class Main {
             }
         return tab;
     }
-    public static void printTab(String[][] tasks){
-        for (int i = 0; i < tasks.length; i++) {
-            System.out.println(tasks[i] + " : ");
-            for (int j = 0; j < tasks[i].length; j++) {
-                System.out.println(tasks[i][j] + " ");
+    public static void printTab(String[][] tab){
+        for (int i = 0; i < tab.length; i++) {
+            System.out.println(i + " : ");
+            for (int j = 0; j < tab[i].length; j++) {
+                System.out.println(tab[i][j] + " ");
             }
             System.out.println();
         }
@@ -117,6 +120,18 @@ public class Main {
                 tasks = ArrayUtils.remove(tab,index);
             }
         }catch(ArrayIndexOutOfBoundsException e){
+            System.err.println(e.getLocalizedMessage());
+        }
+    }
+    public static void saveToFile(String fileName, String[][] tab){
+        Path dir = Paths.get(fileName);
+        String[] lines = new String[tasks.length];
+        for (int i = 0; i <tab.length ; i++) {
+            lines[i] = String.join(",", tab[i]);
+        }
+        try{
+            Files.write(dir,Arrays.asList(lines));
+        }catch(IOException e){
             System.err.println(e.getLocalizedMessage());
         }
     }
